@@ -1,9 +1,44 @@
 import { Canvas } from '@react-three/fiber'
 import { items } from './parse-csv'
 import { OrbitControls, Text } from '@react-three/drei'
-import { Vector3 } from 'three'
+import { Vector3, MeshBasicMaterial, BoxGeometry } from 'three'
+import { Perf } from 'r3f-perf'
 
 const rings = ['support', 'trial', 'assess', 'retire']
+// const rings = ['support']
+
+const techniquesColor = '#03c7b8'
+const platformsColor = '#ce7e19'
+const toolsColor = '#d3ab05'
+const languagesFrameworksColor = '#4e26d0'
+
+const techniquesMaterial = new MeshBasicMaterial({ color: techniquesColor })
+const platformsMaterial = new MeshBasicMaterial({ color: platformsColor })
+const toolsMaterial = new MeshBasicMaterial({ color: toolsColor })
+const languagesFrameworksMaterial = new MeshBasicMaterial({
+  color: languagesFrameworksColor,
+})
+
+const ringMaterial = new MeshBasicMaterial({
+  color: '#ff0000',
+  transparent: true,
+  opacity: 0.2,
+})
+
+const materialForQuadrant = (quadrant: string) => {
+  switch (quadrant.toLowerCase()) {
+    case 'techniques':
+      return techniquesMaterial
+    case 'platforms':
+      return platformsMaterial
+    case 'tools':
+      return toolsMaterial
+    case 'languages-and-frameworks':
+      return languagesFrameworksMaterial
+  }
+}
+
+const boxGeom = new BoxGeometry(0.75, 0.75, 0.75)
 
 type RingProps = {
   ringName: string
@@ -18,16 +53,13 @@ type ItemProps = {
 }
 
 function Ring({ ringName, ringSize }: RingProps) {
-  const color = 0xff0000
-
   const ringItems = items.filter((item) => item.ring.toLowerCase() === ringName)
   const step = Math.PI / ringItems.length
 
   return (
-    <mesh>
-      <meshBasicMaterial transparent color={color} opacity={0.2} />
+    <mesh material={ringMaterial}>
       <sphereGeometry args={[ringSize]} />
-      <Text position-x={ringSize + 1.5} position-y={ringSize}>
+      <Text position-x={ringSize} position-y={0}>
         {ringName}
       </Text>
 
@@ -54,15 +86,19 @@ function Item({ item, position }: ItemProps) {
   }
 
   return (
-    <mesh position={position} onClick={handleClick}>
-      <boxGeometry args={[0.75, 0.75, 0.75]} />
-    </mesh>
+    <mesh
+      position={position}
+      onClick={handleClick}
+      material={materialForQuadrant(quadrant)}
+      geometry={boxGeom}
+    />
   )
 }
 
 function App() {
   return (
     <Canvas>
+      <Perf position="top-left" />
       <OrbitControls makeDefault />
       {rings.map((ringName, index) => (
         <Ring ringName={ringName} ringSize={index * 2 + 4} key={ringName} />

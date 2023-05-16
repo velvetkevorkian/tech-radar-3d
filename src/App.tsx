@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { items } from './parse-csv'
 import { OrbitControls, Text } from '@react-three/drei'
+import { Vector3 } from 'three'
 
 const rings = ['support', 'trial', 'assess', 'retire']
 
@@ -13,14 +14,14 @@ type Item = (typeof items)[0]
 
 type ItemProps = {
   item: Item
-  position: { x: number; y: number; z: number }
+  position: Vector3
 }
 
 function Ring({ ringName, ringSize }: RingProps) {
   const color = 0xff0000
 
   const ringItems = items.filter((item) => item.ring.toLowerCase() === ringName)
-  const step = (Math.PI * 2) / ringItems.length
+  const step = Math.PI / ringItems.length
 
   return (
     <mesh>
@@ -31,10 +32,16 @@ function Ring({ ringName, ringSize }: RingProps) {
       </Text>
 
       {ringItems.map((item, index) => {
-        const x = Math.cos(step * index) * ringSize
-        const y = Math.sin(step * index) * ringSize
-        const z = 0
-        return <Item key={item.id} item={item} position={{ x, y, z }} />
+        const phi = step * index
+        const theta = step * index * 4
+        const radius = ringSize
+        const position = new Vector3().setFromSphericalCoords(
+          radius,
+          phi,
+          theta
+        )
+
+        return <Item key={item.id} item={item} position={position} />
       })}
     </mesh>
   )
@@ -47,7 +54,7 @@ function Item({ item, position }: ItemProps) {
   }
 
   return (
-    <mesh position={[position.x, position.y, position.z]} onClick={handleClick}>
+    <mesh position={position} onClick={handleClick}>
       <boxGeometry args={[0.75, 0.75, 0.75]} />
     </mesh>
   )

@@ -1,49 +1,21 @@
 import { Canvas } from '@react-three/fiber'
 import { items } from './parse-csv'
 import { OrbitControls, Text } from '@react-three/drei'
-import { Vector3, MeshBasicMaterial, BoxGeometry } from 'three'
+import { Vector3, BoxGeometry } from 'three'
 import { Perf } from 'r3f-perf'
+import remap from './remap'
+import { materialForQuadrant, ringMaterial } from './materials'
 
-const rings = ['support', 'trial', 'assess', 'retire']
-// const rings = ['support']
+const rings = ['support', 'trial', 'assess', 'retire'].reverse()
 
-const techniquesColor = '#03c7b8'
-const platformsColor = '#ce7e19'
-const toolsColor = '#d3ab05'
-const languagesFrameworksColor = '#4e26d0'
-
-const techniquesMaterial = new MeshBasicMaterial({ color: techniquesColor })
-const platformsMaterial = new MeshBasicMaterial({ color: platformsColor })
-const toolsMaterial = new MeshBasicMaterial({ color: toolsColor })
-const languagesFrameworksMaterial = new MeshBasicMaterial({
-  color: languagesFrameworksColor,
-})
-
-const ringMaterial = new MeshBasicMaterial({
-  color: '#ff0000',
-  transparent: true,
-  opacity: 0.2,
-})
-
-const materialForQuadrant = (quadrant: string) => {
-  switch (quadrant.toLowerCase()) {
-    case 'techniques':
-      return techniquesMaterial
-    case 'platforms':
-      return platformsMaterial
-    case 'tools':
-      return toolsMaterial
-    case 'languages-and-frameworks':
-      return languagesFrameworksMaterial
-  }
-}
+const quadrants = [
+  'tools',
+  'techniques',
+  'platforms',
+  'languages-and-frameworks',
+]
 
 const boxGeom = new BoxGeometry(0.75, 0.75, 0.75)
-
-type RingProps = {
-  ringName: string
-  ringSize: number
-}
 
 type Item = (typeof items)[0]
 
@@ -52,28 +24,91 @@ type ItemProps = {
   position: Vector3
 }
 
-function Ring({ ringName, ringSize }: RingProps) {
-  const ringItems = items.filter((item) => item.ring.toLowerCase() === ringName)
-  const step = Math.PI / ringItems.length
+type Quadrant = {
+  name: string
+  items: ItemProps[]
+}
 
+type Ring = {
+  name: string
+  quadrants: Quadrant[]
+}
+
+function randomPositionForQuadrant(quadrant: string, radius: number) {
+  let phi = 0 // latitude (north/south)
+  let theta = 0 // longitude (east/west)
+
+  switch (quadrant) {
+    case 'languages-and-frameworks': {
+      // bottom right
+      phi = remap(Math.random(), 0, 1, Math.PI / 2, Math.PI)
+      theta = remap(Math.random(), 0, 1, 0, Math.PI)
+      break
+    }
+    case 'tools': {
+      // top right
+      phi = remap(Math.random(), 0, 1, 0, Math.PI / 2)
+      theta = remap(Math.random(), 0, 1, 0, Math.PI)
+      break
+    }
+    case 'techniques': {
+      // top left
+      phi = remap(Math.random(), 0, 1, 0, Math.PI / 2)
+      theta = remap(Math.random(), 0, 1, -Math.PI, 0)
+      break
+    }
+    case 'platforms': {
+      // bottom left
+      phi = remap(Math.random(), 0, 1, Math.PI / 2, Math.PI)
+      theta = remap(Math.random(), 0, 1, -Math.PI, 0)
+      break
+    }
+  }
+
+  return new Vector3().setFromSphericalCoords(radius, phi, theta)
+}
+
+function buildRings() {
+  return rings.map((r, i) => {
+    return {
+      name: r,
+      quadrants: quadrants.map((q) => {
+        return {
+          name: q,
+          items: items
+            .filter(
+              (item) =>
+                item.ring.toLowerCase() === r &&
+                item.quadrant.toLowerCase() === q
+            )
+            .map((item) => {
+              // TODO: distribute evenly across the sphere's surface
+              const position = randomPositionForQuadrant(q, i + 4)
+              return {
+                ...item,
+                position,
+              }
+            }),
+        }
+      }),
+    }
+  })
+}
+
+const ringsWithItems = buildRings()
+
+function Ring({ ring, ringSize }) {
   return (
     <mesh material={ringMaterial}>
-      <sphereGeometry args={[ringSize]} />
+      <sphereGeometry args={[ringSize + 4]} />
       <Text position-x={ringSize} position-y={0}>
-        {ringName}
+        {ring.name}
       </Text>
 
-      {ringItems.map((item, index) => {
-        const phi = step * index
-        const theta = step * index * 4
-        const radius = ringSize
-        const position = new Vector3().setFromSphericalCoords(
-          radius,
-          phi,
-          theta
-        )
-
-        return <Item key={item.id} item={item} position={position} />
+      {ring.quadrants.map((quad) => {
+        return quad.items.map((item) => (
+          <Item key={item.id} item={item} position={item.position} />
+        ))
       })}
     </mesh>
   )
@@ -100,8 +135,9 @@ function App() {
     <Canvas>
       <Perf position="top-left" />
       <OrbitControls makeDefault />
-      {rings.map((ringName, index) => (
-        <Ring ringName={ringName} ringSize={index * 2 + 4} key={ringName} />
+      <axesHelper args={[5]} />
+      {ringsWithItems.map((r, index) => (
+        <Ring ring={r} ringSize={index} key={r.name} />
       ))}
     </Canvas>
   )

@@ -1,4 +1,5 @@
 import { MeshBasicMaterial } from 'three'
+import type { QuadrantName } from '../types'
 
 const techniquesColor = '#03c7b8'
 const platformsColor = '#ce7e19'
@@ -18,7 +19,7 @@ export const ringMaterial = new MeshBasicMaterial({
   opacity: 0.1,
 })
 
-export const materialForQuadrant = (quadrant: string) => {
+export const materialForQuadrant = (quadrant: QuadrantName) => {
   switch (quadrant.toLowerCase()) {
     case 'techniques':
       return techniquesMaterial

@@ -37,6 +37,10 @@ function randomPositionForQuadrant(quadrant: QuadrantName, radius: number) {
   return new Vector3().setFromSphericalCoords(radius, phi, theta)
 }
 
+export function radiusForIndex(index: number) {
+  return index * 2 + 2
+}
+
 export function buildRings(items: Item[]) {
   return rings.map((r, i) => {
     return {
@@ -52,7 +56,7 @@ export function buildRings(items: Item[]) {
             )
             .map((item) => {
               // TODO: distribute evenly across the sphere's surface
-              const position = randomPositionForQuadrant(q, i + 4)
+              const position = randomPositionForQuadrant(q, radiusForIndex(i))
               return {
                 item,
                 position,

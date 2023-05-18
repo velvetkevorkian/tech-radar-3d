@@ -1,12 +1,12 @@
 import { Text } from '@react-three/drei'
 import type { RingProps } from '../types'
 import { ringMaterial } from '../utils/materials'
-import { RadarItem } from './RadarItem'
 import { useParams } from 'react-router-dom'
+import { Quadrant } from './Quadrant'
 
 export function Ring({ ring, ringSize }: RingProps) {
-  const { quadrant } = useParams()
-  console.log({ quadrant })
+  const { quadrant: activeQuadrant } = useParams()
+
   return (
     <mesh material={ringMaterial}>
       <sphereGeometry args={[ringSize + 4]} />
@@ -14,11 +14,13 @@ export function Ring({ ring, ringSize }: RingProps) {
         {ring.name}
       </Text>
 
-      {ring.quadrants.map((quad) =>
-        quad.items.map(({ item, position }) => (
-          <RadarItem key={item.id} item={item} position={position} />
-        ))
-      )}
+      {ring.quadrants.map((quad) => (
+        <Quadrant
+          quadrant={quad}
+          key={quad.name}
+          activeQuadrant={activeQuadrant}
+        />
+      ))}
     </mesh>
   )
 }

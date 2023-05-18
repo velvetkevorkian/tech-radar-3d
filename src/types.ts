@@ -20,7 +20,7 @@ export type Item = {
   id: number
 }
 
-type RingQuadrant = {
+export type RingQuadrant = {
   name: QuadrantName
   items: RadarItemProps[]
 }
@@ -38,4 +38,8 @@ export type RadarItemProps = {
 export type RingProps = {
   ring: Ring
   ringSize: number
+}
+export type QuadrantProps = {
+  quadrant: RingQuadrant
+  activeQuadrant: string | undefined
 }

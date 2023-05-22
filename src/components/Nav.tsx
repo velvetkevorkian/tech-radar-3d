@@ -4,7 +4,7 @@ import type { LinkItemProps } from '../types'
 
 function LinkItem({ param, type }: LinkItemProps) {
   return (
-    <Link to={`/${type}/param`} key={param}>
+    <Link to={`/${type}/${param}`} key={param}>
       {param.replaceAll('-', ' ')}
     </Link>
   )
@@ -12,18 +12,18 @@ function LinkItem({ param, type }: LinkItemProps) {
 
 export function Nav() {
   // TODO: active state
-  // const { quadrant, ring } = useParams()
+  const { quadrant, ring } = useParams()
 
   return (
     <nav>
       Quadrants:
       {quadrants.map((q) => (
-        <LinkItem param={q} type="quadrant" />
+        <LinkItem param={q} type="quadrant" key={q} />
       ))}
       <br />
       Rings:
       {rings.map((r) => (
-        <LinkItem param={r} type="ring" />
+        <LinkItem param={r} type="ring" key={r} />
       ))}
       <br />
       All: <Link to="/">Show</Link>

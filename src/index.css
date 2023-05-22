@@ -28,3 +28,10 @@ nav a {
 nav a.active {
   border-color: currentColor;
 }
+
+.item-content {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 33vw;
+  min-width: 200px;
+  padding: 0.5em 0 1em 1em;
+}

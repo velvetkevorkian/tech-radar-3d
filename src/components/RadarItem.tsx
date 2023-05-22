@@ -30,8 +30,10 @@ export function RadarItem({ item, position, isActive }: RadarItemProps) {
 
       {isActive && (
         <Html position={position}>
-          <h2>{name}</h2>
-          <div dangerouslySetInnerHTML={{ __html: description }} />
+          <div className="item-content">
+            <h2>{name}</h2>
+            <div dangerouslySetInnerHTML={{ __html: description }} />
+          </div>
         </Html>
       )}
     </mesh>

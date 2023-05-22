@@ -6,10 +6,12 @@ import { Quadrant } from './Quadrant'
 import { radiusForIndex } from '../utils/buildRings'
 
 export function Ring({ ring, ringSize }: RingProps) {
-  const { quadrant: activeQuadrant } = useParams()
+  const { quadrant: activeQuadrant, ring: activeRing } = useParams()
+
+  const visible = !activeRing || activeRing === ring.name
 
   return (
-    <mesh>
+    <mesh visible={visible}>
       <mesh material={ringMaterial}>
         <sphereGeometry args={[radiusForIndex(ringSize)]} />
         <Wireframe />

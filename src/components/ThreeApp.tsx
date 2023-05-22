@@ -1,31 +1,30 @@
 import { Canvas } from '@react-three/fiber'
-import { items } from '../utils/parse-csv'
 import { OrbitControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
-import { buildRings } from '../utils/buildRings'
-import { Ring } from '../components/Ring'
 import { useControls } from 'leva'
 import { SelectedProvider } from '../SelectedContext'
-
-const rings = buildRings(items)
+import { Nav } from './Nav'
+import { Radar } from './Radar'
 
 export function ThreeApp() {
   const debug = useControls('debug', { enabled: true })
   const performance = useControls('performance', { enabled: true })
 
   return (
-    <Canvas>
-      {performance.enabled && <Perf position="bottom-right" />}
+    <>
+      <Nav />
 
-      <OrbitControls makeDefault />
+      <Canvas>
+        {performance.enabled && <Perf position="bottom-right" />}
 
-      {debug.enabled && <axesHelper args={[5]} />}
+        <OrbitControls makeDefault />
 
-      <SelectedProvider>
-        {rings.map((r, index) => (
-          <Ring ring={r} ringSize={index} key={r.name} />
-        ))}
-      </SelectedProvider>
-    </Canvas>
+        {debug.enabled && <axesHelper args={[5]} />}
+
+        <SelectedProvider>
+          <Radar />
+        </SelectedProvider>
+      </Canvas>
+    </>
   )
 }

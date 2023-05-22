@@ -40,7 +40,13 @@ export type RingProps = {
   ring: Ring
   ringSize: number
 }
+
 export type QuadrantProps = {
   quadrant: RingQuadrant
   activeQuadrant: string | undefined
+}
+
+export type LinkItemProps = {
+  param: string
+  type: 'quadrant' | 'ring'
 }

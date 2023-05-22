@@ -1,20 +1,13 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
-import { quadrants } from './types'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ThreeApp } from './components/ThreeApp'
 
 function App() {
   return (
     <BrowserRouter>
-      <nav>
-        <Link to="/">All</Link>
-        {quadrants.map((q) => (
-          <Link to={q} key={q}>
-            {q.replaceAll('-', ' ')}
-          </Link>
-        ))}
-      </nav>
       <Routes>
-        <Route path="/:quadrant?" element={<ThreeApp />} />
+        <Route path="/" element={<ThreeApp />} />
+        <Route path="/quadrant/:quadrant?" element={<ThreeApp />} />
+        <Route path="/ring/:ring?" element={<ThreeApp />} />
       </Routes>
     </BrowserRouter>
   )

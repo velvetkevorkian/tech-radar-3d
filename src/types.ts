@@ -49,4 +49,5 @@ export type QuadrantProps = {
 export type LinkItemProps = {
   param: string
   type: 'quadrant' | 'ring'
+  active: boolean
 }

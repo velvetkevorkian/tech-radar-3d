@@ -15,7 +15,7 @@ export function RadarItem({ item, position, isActive }: RadarItemProps) {
 
   const handleClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation()
-    setSelected(name)
+    setSelected(isActive ? '' : name)
   }
 
   return (

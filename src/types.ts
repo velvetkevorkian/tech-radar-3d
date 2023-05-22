@@ -33,6 +33,7 @@ export type Ring = {
 export type RadarItemProps = {
   item: Item
   position: Vector3
+  isActive: boolean
 }
 
 export type RingProps = {

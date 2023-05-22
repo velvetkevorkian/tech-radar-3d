@@ -7,7 +7,8 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: sans-serif;
+  font-family: monospace;
+  background: black;
 }
 
 nav {
@@ -15,6 +16,8 @@ nav {
   top: 0;
   left: 0;
   z-index: 1;
+  color: #00ff00;
+  padding-left: 1em;
 }
 
 nav a {
@@ -22,7 +25,8 @@ nav a {
   padding: 0.25em;
   margin: 0.25em;
   text-transform: capitalize;
-  border: 2px solid transparent;
+  border: 1px dotted transparent;
+  color: #00ff00;
 }
 
 nav a.active {

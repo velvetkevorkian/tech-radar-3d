@@ -21,6 +21,8 @@ export function ThreeApp() {
 
         {debug.enabled && <axesHelper args={[5]} />}
 
+        {/* <ambientLight /> */}
+
         <SelectedProvider>
           <Radar />
         </SelectedProvider>

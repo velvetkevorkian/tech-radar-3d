@@ -14,9 +14,9 @@ const languagesFrameworksMaterial = new MeshBasicMaterial({
 })
 
 export const ringMaterial = new MeshBasicMaterial({
-  color: '#ff0000',
+  color: '#00ff00',
   transparent: true,
-  opacity: 0.1,
+  opacity: 0.5,
 })
 
 export const materialForQuadrant = (quadrant: QuadrantName) => {

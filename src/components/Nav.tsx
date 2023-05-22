@@ -15,7 +15,6 @@ function LinkItem({ param, type, active }: LinkItemProps) {
 }
 
 export function Nav() {
-  // TODO: active state
   const { quadrant, ring } = useParams()
 
   return (
@@ -30,7 +29,9 @@ export function Nav() {
         <LinkItem param={r} type="ring" key={r} active={ring === r} />
       ))}
       <br />
-      All: <Link to="/">Show</Link>
+      <Link to="/" className={quadrant || ring ? undefined : 'active'}>
+        Show All
+      </Link>
     </nav>
   )
 }

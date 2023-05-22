@@ -14,7 +14,15 @@ export function Ring({ ring, ringSize }: RingProps) {
     <mesh visible={visible}>
       <mesh material={ringMaterial}>
         <sphereGeometry args={[radiusForIndex(ringSize)]} />
-        <Wireframe />
+        <Wireframe
+          stroke={'#00ff00'}
+          strokeOpacity={0.8}
+          simplify
+          fillOpacity={0.1}
+          fillMix={1}
+          squeeze
+          squeezeMin={0.5}
+        />
       </mesh>
 
       {/* <Text position-x={ringSize} position-y={0}>

@@ -1,4 +1,7 @@
-import { Text, Wireframe } from '@react-three/drei'
+import {
+  // Text,
+  Wireframe,
+} from '@react-three/drei'
 import type { RingProps } from '../types'
 import { ringMaterial } from '../utils/materials'
 import { useParams } from 'react-router-dom'

@@ -10,7 +10,8 @@ const sphereGeom = new SphereGeometry(0.25, 12, 12)
 
 const minScale = 1
 const maxScale = 1.3
-const scaleStep = 0.05
+const scaleTime = 0.15 // in seconds, because delta is is seconds not ms like you'd expect
+const scaleStep = (maxScale - minScale) / scaleTime // scale amount per second
 
 export function RadarItem({ item, position, isActive }: RadarItemProps) {
   const { name, quadrant, description } = item
@@ -18,16 +19,19 @@ export function RadarItem({ item, position, isActive }: RadarItemProps) {
   const { setSelected } = useContext(SelectedContext)
   const [isHovered, setIsHovered] = useState(false)
 
-  useFrame(() => {
+  useFrame((_state, delta) => {
     if (!meshRef.current) return
-    if (isHovered && meshRef.current.scale.x < maxScale) {
-      meshRef.current.scale.x += scaleStep
-      meshRef.current.scale.y += scaleStep
-      meshRef.current.scale.z += scaleStep
-    } else if (!isHovered && meshRef.current.scale.x > minScale) {
-      meshRef.current.scale.x -= scaleStep
-      meshRef.current.scale.y -= scaleStep
-      meshRef.current.scale.z -= scaleStep
+
+    const step = scaleStep * delta
+
+    const { scale } = meshRef.current
+
+    if ((isActive || isHovered) && scale.x < maxScale) {
+      const newScale = scale.x + step
+      scale.set(newScale, newScale, newScale)
+    } else if (!isHovered && !isActive && scale.x > minScale) {
+      const newScale = scale.x - step
+      scale.set(newScale, newScale, newScale)
     }
   })
 

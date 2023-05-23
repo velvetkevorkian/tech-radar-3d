@@ -39,3 +39,7 @@ nav a.active {
   min-width: 200px;
   padding: 0.5em 0 1em 1em;
 }
+
+.hover canvas {
+  cursor: pointer;
+}

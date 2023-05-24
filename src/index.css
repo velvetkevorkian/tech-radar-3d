@@ -33,11 +33,37 @@ nav a.active {
   border-color: currentColor;
 }
 
-.item-content {
-  background-color: rgba(255, 255, 255, 0.8);
+.item-wrapper {
+  pointer-events: none;
+}
+
+.item-wrapper a {
+  pointer-events: all;
+}
+
+.item-wrapper h2 {
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+.item-content,
+.item-preview {
   width: 33vw;
   min-width: 200px;
-  padding: 0.5em 0 1em 1em;
+  padding: 0.5em;
+  transform: translate(0.5em, -1.5em);
+}
+
+.item-content {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.item-preview {
+  pointer-events: none;
+}
+
+.item-preview h2 {
+  color: #00ff00;
 }
 
 .hover canvas {

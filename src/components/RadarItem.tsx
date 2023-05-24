@@ -13,7 +13,12 @@ const maxScale = 1.3
 const scaleTime = 0.15 // in seconds, because delta is is seconds not ms like you'd expect
 const scaleStep = (maxScale - minScale) / scaleTime // scale amount per second
 
-export function RadarItem({ item, position, isActive }: RadarItemProps) {
+export function RadarItem({
+  item,
+  position,
+  isActive,
+  isVisible,
+}: RadarItemProps) {
   const { name, quadrant, description } = item
   const meshRef = useRef<Mesh>(null)
   const { setSelected } = useContext(SelectedContext)
@@ -65,12 +70,15 @@ export function RadarItem({ item, position, isActive }: RadarItemProps) {
       />
 
       <Html wrapperClass="item-wrapper" position={position}>
-        <div className={isActive ? 'item-content' : 'item-preview'}>
-          {(isHovered || isActive) && <h2>{name}</h2>}
-          {isActive && (
-            <div dangerouslySetInnerHTML={{ __html: description }} />
-          )}
-        </div>
+        {/* TODO: remove this once Html respects parent's visibility */}
+        {isVisible && (
+          <div className={isActive ? 'item-content' : 'item-preview'}>
+            {(isHovered || isActive) && <h2>{name}</h2>}
+            {isActive && (
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+            )}
+          </div>
+        )}
       </Html>
     </mesh>
   )

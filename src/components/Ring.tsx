@@ -6,7 +6,7 @@ import { Quadrant } from './Quadrant'
 import { radiusForIndex } from '../utils/buildRings'
 
 export function Ring({ ring, ringSize }: RingProps) {
-  const { quadrant: activeQuadrant, ring: activeRing } = useParams()
+  const { ring: activeRing } = useParams()
 
   const visible = !activeRing || activeRing === ring.name
 
@@ -26,11 +26,7 @@ export function Ring({ ring, ringSize }: RingProps) {
       </mesh>
 
       {ring.quadrants.map((quad) => (
-        <Quadrant
-          quadrant={quad}
-          key={quad.name}
-          activeQuadrant={activeQuadrant}
-        />
+        <Quadrant quadrant={quad} key={quad.name} />
       ))}
     </mesh>
   )

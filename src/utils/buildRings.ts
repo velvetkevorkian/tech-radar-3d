@@ -48,6 +48,7 @@ export function buildRings(items: Item[]) {
       quadrants: quadrants.map((q) => {
         return {
           name: q,
+          ring: r,
           items: items
             .filter(
               (item) =>

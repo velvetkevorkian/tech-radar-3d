@@ -22,6 +22,7 @@ export type Item = {
 
 export type RingQuadrant = {
   name: QuadrantName
+  ring: RingName
   items: RadarItemProps[]
 }
 
@@ -34,6 +35,7 @@ export type RadarItemProps = {
   item: Item
   position: Vector3
   isActive: boolean
+  isVisible: boolean
 }
 
 export type RingProps = {
@@ -43,7 +45,6 @@ export type RingProps = {
 
 export type QuadrantProps = {
   quadrant: RingQuadrant
-  activeQuadrant: string | undefined
 }
 
 export type LinkItemProps = {

@@ -64,22 +64,14 @@ export function RadarItem({ item, position, isActive }: RadarItemProps) {
         ref={meshRef}
       />
 
-      {isHovered && !isActive && (
-        <Html wrapperClass="item-wrapper" position={position}>
-          <div className="item-preview">
-            <h2>{name}</h2>
-          </div>
-        </Html>
-      )}
-
-      {isActive && (
-        <Html wrapperClass="item-wrapper" position={position}>
-          <div className="item-content">
-            <h2>{name}</h2>
+      <Html wrapperClass="item-wrapper" position={position}>
+        <div className={isActive ? 'item-content' : 'item-preview'}>
+          {(isHovered || isActive) && <h2>{name}</h2>}
+          {isActive && (
             <div dangerouslySetInnerHTML={{ __html: description }} />
-          </div>
-        </Html>
-      )}
+          )}
+        </div>
+      </Html>
     </mesh>
   )
 }

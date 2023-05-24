@@ -1,7 +1,4 @@
-import {
-  // Text,
-  Wireframe,
-} from '@react-three/drei'
+import { Wireframe } from '@react-three/drei'
 import type { RingProps } from '../types'
 import { ringMaterial } from '../utils/materials'
 import { useParams } from 'react-router-dom'
@@ -27,10 +24,6 @@ export function Ring({ ring, ringSize }: RingProps) {
           squeezeMin={0.5}
         />
       </mesh>
-
-      {/* <Text position-x={ringSize} position-y={0}>
-        {ring.name}
-      </Text> */}
 
       {ring.quadrants.map((quad) => (
         <Quadrant

@@ -1,12 +1,15 @@
 import data from '../assets/data/interfaces-and-devices/radar.csv?raw'
 import type { Item } from '../types'
 
-const lines = data.split('\n').slice(1).filter(Boolean)
+const parseCsv = (csv: string) => {
+  const lines = csv.split('\n').slice(1).filter(Boolean)
+  return lines.map((line, id) => {
+    const [name, ring, quadrant, status, ...rest] = line.split(',')
+    const description = rest.join(',')
+    return { name, ring, quadrant, status, description, id } as Item
+  })
+}
 
-const items = lines.map((line, id) => {
-  const [columns, description] = line.split(`"`).filter(Boolean)
-  const [name, ring, quadrant, status] = columns.split(',')
-  return { name, ring, quadrant, status, description, id } as Item
-})
+const items = parseCsv(data)
 
-export { items }
+export { items, parseCsv }

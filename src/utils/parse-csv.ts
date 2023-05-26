@@ -5,7 +5,11 @@ const parseCsv = (csv: string) => {
   const lines = csv.split('\n').slice(1).filter(Boolean)
   return lines.map((line, id) => {
     const [name, ring, quadrant, status, ...rest] = line.split(',')
-    const description = rest.join(',')
+    const description = rest
+      .join(',')
+      // strip leading/trailing quotes
+      .replaceAll(/^"|"$/gm, '')
+
     return { name, ring, quadrant, status, description, id } as Item
   })
 }

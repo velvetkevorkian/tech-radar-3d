@@ -20,6 +20,10 @@ describe('parseCsv', () => {
         )
       })
 
+      it('strips the quotation marks', () => {
+        expect(result[0].description.charAt(0)).toBe('S')
+      })
+
       it('parses the properties', () => {
         expect(result[0]).toMatchObject({
           name: 'TDD',

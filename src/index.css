@@ -69,3 +69,26 @@ nav a.active {
 .hover canvas {
   cursor: pointer;
 }
+
+.description {
+  margin-top: 0.5em;
+}
+
+dl {
+  margin-top: 1em;
+  overflow: hidden; /* clearfix */
+}
+
+dt::after {
+  content: ':';
+  margin-right: 1ch;
+}
+
+dt,
+dd {
+  float: left;
+}
+
+dt {
+  clear: both;
+}

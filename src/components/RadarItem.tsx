@@ -25,7 +25,7 @@ export function RadarItem({
   isActive,
   isVisible,
 }: RadarItemProps) {
-  const { name, quadrant, description, status } = item
+  const { name, quadrant, description, status, ring } = item
   const meshRef = useRef<Mesh>(null)
   const { setSelected } = useContext(SelectedContext)
   const [isHovered, setIsHovered] = useState(false)
@@ -107,7 +107,20 @@ export function RadarItem({
           <div className={isActive ? 'item-content' : 'item-preview'}>
             {(isHovered || isActive) && <h2>{name}</h2>}
             {isActive && (
-              <div dangerouslySetInnerHTML={{ __html: description }} />
+              <>
+                <div
+                  className="description"
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
+                <dl>
+                  <dt>Status</dt>
+                  <dd>{status}</dd>
+                  <dt>Ring</dt>
+                  <dd>{ring}</dd>
+                  <dt>Quadrant</dt>
+                  <dd>{quadrant.replaceAll('-', ' ')}</dd>
+                </dl>
+              </>
             )}
           </div>
         )}

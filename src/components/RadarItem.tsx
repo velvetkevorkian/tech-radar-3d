@@ -1,15 +1,21 @@
-import { SphereGeometry, Mesh } from 'three'
+import { SphereGeometry, TorusGeometry, Mesh } from 'three'
 import { materialForQuadrant } from '../utils/materials'
 import type { RadarItemProps } from '../types'
 import { useRef, useContext, useState } from 'react'
 import { ThreeEvent, useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
+import { Html, Billboard } from '@react-three/drei'
 import { SelectedContext } from '../SelectedContext'
 
-const sphereGeom = new SphereGeometry(0.25, 12, 12)
+const sphereRadius = 0.25
+const arcRadius = 0.35
+const tubeRadius = 0.03
+
+const sphereGeom = new SphereGeometry(sphereRadius, 12, 12)
+const arcGeom = new TorusGeometry(arcRadius, tubeRadius, 12, 24, Math.PI / 2)
+const ringGeom = new TorusGeometry(arcRadius, tubeRadius, 12, 24, Math.PI * 2)
 
 const minScale = 1
-const maxScale = 1.3
+const maxScale = 1.4
 const scaleTime = 0.15 // in seconds, because delta is is seconds not ms like you'd expect
 const scaleStep = (maxScale - minScale) / scaleTime // scale amount per second
 
@@ -19,7 +25,7 @@ export function RadarItem({
   isActive,
   isVisible,
 }: RadarItemProps) {
-  const { name, quadrant, description } = item
+  const { name, quadrant, description, status } = item
   const meshRef = useRef<Mesh>(null)
   const { setSelected } = useContext(SelectedContext)
   const [isHovered, setIsHovered] = useState(false)
@@ -57,17 +63,43 @@ export function RadarItem({
     setIsHovered(false)
   }
 
+  const material = materialForQuadrant(quadrant)
+
+  let statusGeom = null
+
+  switch (status) {
+    case 'new': {
+      statusGeom = ringGeom
+      break
+    }
+
+    case 'in':
+    case 'out': {
+      statusGeom = arcGeom
+      break
+    }
+  }
+
   return (
     <mesh>
-      <mesh
-        geometry={sphereGeom}
-        material={materialForQuadrant(quadrant)}
-        onClick={handleClick}
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
-        position={position}
-        ref={meshRef}
-      />
+      <Billboard position={position}>
+        <mesh
+          geometry={sphereGeom}
+          material={material}
+          onClick={handleClick}
+          onPointerEnter={handlePointerEnter}
+          onPointerLeave={handlePointerLeave}
+          ref={meshRef}
+        />
+
+        {statusGeom && (
+          <mesh
+            geometry={statusGeom}
+            material={material}
+            rotation={[0, 0, status === 'out' ? Math.PI : 0]}
+          />
+        )}
+      </Billboard>
 
       <Html wrapperClass="item-wrapper" position={position}>
         {/* TODO: remove this once Html respects parent's visibility */}

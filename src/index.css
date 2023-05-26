@@ -41,7 +41,7 @@ nav a.active {
   pointer-events: all;
 }
 
-.item-wrapper h2 {
+h2 {
   white-space: nowrap;
   font-weight: normal;
 }
@@ -58,10 +58,6 @@ nav a.active {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.item-preview {
-  pointer-events: none;
-}
-
 .item-preview h2 {
   color: #00ff00;
 }
@@ -75,20 +71,12 @@ nav a.active {
 }
 
 dl {
-  margin-top: 1em;
-  overflow: hidden; /* clearfix */
+  margin-top: 0.5em;
+  display: grid;
+  grid-template-columns: auto 1fr;
 }
 
 dt::after {
   content: ':';
   margin-right: 1ch;
-}
-
-dt,
-dd {
-  float: left;
-}
-
-dt {
-  clear: both;
 }

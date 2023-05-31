@@ -81,7 +81,7 @@ export function RadarItem({
   }
 
   return (
-    <mesh>
+    <group>
       <Billboard position={position}>
         <mesh
           geometry={sphereGeom}
@@ -125,6 +125,6 @@ export function RadarItem({
           </div>
         )}
       </Html>
-    </mesh>
+    </group>
   )
 }

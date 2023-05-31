@@ -11,7 +11,7 @@ export function Ring({ ring, ringSize }: RingProps) {
   const visible = !activeRing || activeRing === ring.name
 
   return (
-    <mesh visible={visible}>
+    <group visible={visible}>
       <mesh material={ringMaterial}>
         <sphereGeometry args={[radiusForIndex(ringSize)]} />
         <Wireframe
@@ -28,6 +28,6 @@ export function Ring({ ring, ringSize }: RingProps) {
       {ring.quadrants.map((quad) => (
         <Quadrant quadrant={quad} key={quad.name} />
       ))}
-    </mesh>
+    </group>
   )
 }

@@ -17,7 +17,7 @@ export function Quadrant({ quadrant }: QuadrantProps) {
 
   const { selected } = useContext(SelectedContext)
   return (
-    <mesh visible={isVisible}>
+    <group visible={isVisible}>
       {quadrant.items.map(({ item, position }) => (
         <RadarItem
           key={item.id}
@@ -29,6 +29,6 @@ export function Quadrant({ quadrant }: QuadrantProps) {
           isVisible={isVisible}
         />
       ))}
-    </mesh>
+    </group>
   )
 }

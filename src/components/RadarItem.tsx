@@ -5,6 +5,7 @@ import { useRef, useContext, useState } from 'react'
 import { ThreeEvent, useFrame } from '@react-three/fiber'
 import { Html, Billboard } from '@react-three/drei'
 import { SelectedContext } from '../SelectedContext'
+import { Summary } from './Summary'
 
 const sphereRadius = 0.25
 const arcRadius = 0.35
@@ -25,7 +26,7 @@ export function RadarItem({
   isActive,
   isVisible,
 }: RadarItemProps) {
-  const { name, quadrant, description, status, ring } = item
+  const { name, quadrant, status } = item
   const meshRef = useRef<Mesh>(null)
   const { setSelected } = useContext(SelectedContext)
   const [isHovered, setIsHovered] = useState(false)
@@ -104,25 +105,7 @@ export function RadarItem({
       <Html wrapperClass="item-wrapper" position={position}>
         {/* TODO: remove this once Html respects parent's visibility */}
         {isVisible && (
-          <div className={isActive ? 'item-content' : 'item-preview'}>
-            {(isHovered || isActive) && <h2>{name}</h2>}
-            {isActive && (
-              <>
-                <div
-                  className="description"
-                  dangerouslySetInnerHTML={{ __html: description }}
-                />
-                <dl>
-                  <dt>Status</dt>
-                  <dd>{status}</dd>
-                  <dt>Ring</dt>
-                  <dd>{ring}</dd>
-                  <dt>Quadrant</dt>
-                  <dd>{quadrant.replaceAll('-', ' ')}</dd>
-                </dl>
-              </>
-            )}
-          </div>
+          <Summary item={item} isActive={isActive} isHovered={isHovered} />
         )}
       </Html>
     </group>

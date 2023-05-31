@@ -52,3 +52,9 @@ export type LinkItemProps = {
   type: 'quadrant' | 'ring'
   active: boolean
 }
+
+export type SummaryProps = {
+  item: Item
+  isHovered: boolean
+  isActive: boolean
+}

@@ -13,17 +13,18 @@ function positionsForQuadrant(count: number, quadrant: QuadrantName) {
   let total = 0
 
   while (total < count) {
-    // TODO: don't fill last row unless needed?
-    rows[row] = new Array(row + 1).fill(row)
+    const fullRow = row + 1
+    const newRow = total + fullRow > count ? count - total : fullRow
+    rows[row] = new Array(newRow).fill(row)
     row++
-    total += row
+    total += newRow
   }
 
   const rowAngleStep = Math.PI / 2 / (rows.length + 2)
 
   const positions = rows
     .map((r, i) => {
-      const phi = rowAngleStep * (i + 1)
+      const phi = rowAngleStep * (i + 2)
       const columnAngleStep = Math.PI / (r.length + 1)
       const vectors = r.map((_, j) => {
         const theta = columnAngleStep * (j + 1)

@@ -48,7 +48,7 @@ function remapAnglesForQuadrant({
   switch (quadrant) {
     case 'languages-and-frameworks': {
       // bottom right
-      phi = remap(phi, 0, HALF_PI, HALF_PI, PI)
+      phi = remap(phi, 0, HALF_PI, PI, HALF_PI)
       theta = remap(theta, 0, PI, 0, PI)
       break
     }
@@ -66,7 +66,7 @@ function remapAnglesForQuadrant({
     }
     case 'platforms': {
       // bottom left
-      phi = remap(phi, 0, HALF_PI, HALF_PI, PI)
+      phi = remap(phi, 0, HALF_PI, PI, HALF_PI)
       theta = remap(theta, 0, PI, -PI, 0)
       break
     }
